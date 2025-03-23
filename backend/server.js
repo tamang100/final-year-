@@ -14,12 +14,12 @@ dotenv.config();
 connectDB();
 
 const server = express();
-
+const PORT = process.env.PORT
 // server.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 const allowedOrigins = [
-  // "http://127.0.0.1:3000",
-  // "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost:3000",
   "https://checkout.stripe.com",
 ];
 
@@ -44,7 +44,7 @@ if (process.env.MODE === "production") {
   });
 }
 
-const PORT = process.env.PORT;
+
 server.listen(PORT, () => {
   console.log(`Server Running on port ${PORT}`);
 });

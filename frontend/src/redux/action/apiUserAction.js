@@ -32,6 +32,7 @@ export const login = (email, password) => {
       dispatch(loginSuccess(data));
       localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {
+      debugger
       dispatch(
         loginFailed(
           error.response && error.response.data.message

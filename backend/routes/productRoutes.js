@@ -11,6 +11,7 @@ import {
 } from "../controller/productController.js";
 import { protect, admin, declineDemo } from "../middleware/authMiddleware.js";
 import multer from "multer";
+import bodyParser from "body-parser";
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ const upload = multer({ storage: storage });
 // admin routes
 router.post(
   "/",
-  upload.any("images"),
+  bodyParser.raw({ type: ['image/jpeg', 'image/png'], limit: '5mb' }),
   protect,
   admin,
   declineDemo,

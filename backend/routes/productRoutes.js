@@ -1,4 +1,5 @@
 import express from "express";
+import path from 'path'
 import {
   getRecommendProducts,
   getNewArrivalsProducts,
@@ -11,7 +12,6 @@ import {
 } from "../controller/productController.js";
 import { protect, admin, declineDemo } from "../middleware/authMiddleware.js";
 import multer from "multer";
-import bodyParser from "body-parser";
 
 const router = express.Router();
 
@@ -24,12 +24,30 @@ router.post("/:id/reviews", protect, createProductReview);
 
 // image Middleware
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const imageStorage = multer.diskStorage({
+  destination: "public/images",
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+const upload = multer({
+  storage: imageStorage,
+  limits: 1000000,
+  // fileFilter(req, file, cb) {
+  //   if (file.originalname.match(/\.(png|jpg)$/)) {
+  //     return cb(new Error("Please upload image"));
+  //   }
+  //   cb(undefined, true)
+  // },
+});
 
 // admin routes
 router.post(
   "/",
-  bodyParser.raw({ type: ['image/jpeg', 'image/png'], limit: '5mb' }),
+  upload.any("images"),
   protect,
   admin,
   declineDemo,

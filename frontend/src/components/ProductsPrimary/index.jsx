@@ -11,13 +11,14 @@ export default function ProductsPrimary({ product }) {
       className="productCard_primary"
       onClick={() => navigate(`/product/${product._id}`)}
     >
+      { product.images[0] }
       <LazyLoadImage
         width="100%"
         height="75%"
         alt="product_image"
         effect="blur"
-        src={product.images[0]}
-        placeholderSrc={product.images[0]}
+        src={`http://localhost:8000/images/${product.images[0]}`}
+        placeholderSrc={`http://localhost:8000/images/${product.images[0]}`}
       />
       <h1>{product.name}</h1>
       <Ratings product={product} />

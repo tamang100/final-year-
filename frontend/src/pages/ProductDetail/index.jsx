@@ -37,7 +37,7 @@ export default function ProductPage() {
         <div className="productDetailPage">
           <img
             className="productDetailPage__mainImg shadow-4D"
-            src={productInfo.images?.[currImg]}
+            src={`http://localhost:8000/images/${productInfo.images?.[currImg]}`}
             alt="product_images"
           />
 
@@ -50,7 +50,7 @@ export default function ProductPage() {
                       ? "productDetailPage__imgPagination--selected"
                       : "productDetailPage__imgPagination--notSelected"
                   }
-                  src={img}
+                  src={`http://localhost:8000/images/${img}`}
                   alt={index}
                   key={index}
                   onClick={(e) => setCurrImg(parseInt(e.target.alt))}

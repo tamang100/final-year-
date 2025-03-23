@@ -23,6 +23,8 @@ const allowedOrigins = [
   "https://checkout.stripe.com",
 ];
 
+const __dirname = path.resolve();
+
 server.use(cors({ origin: allowedOrigins }));
 
 server.use("/stripe", stripeRoutes);
@@ -30,13 +32,13 @@ server.use("/stripe", stripeRoutes);
 server.use(express.urlencoded({ extended: false }));
 
 // parse request body to JSON format
+server.use(express.static(path.join(__dirname, 'public')))
 server.use(express.json());
 
 server.use("/api/products", productRoutes);
 server.use("/api/users", userRoutes);
 server.use("/api/orders", orderRoutes);
 
-const __dirname = path.resolve();
 if (process.env.MODE === "production") {
   server.use(express.static(path.join(__dirname, "/frontend/build")));
   server.get("*", (req, res) => {

@@ -1,11 +1,8 @@
 import Product from "../models/productModel.js";
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import dotenv from "dotenv";
+
+import fs from 'fs'
 
 dotenv.config();
 
@@ -13,13 +10,6 @@ const randomImageName = (bytes = 16) => {
   return crypto.randomBytes(bytes).toString("hex");
 };
 
-// const s3 = new S3Client({
-//   region: process.env.AWS_BUCKET_REGION,
-//   credentials: {
-//     accessKeyId: process.env.AWS_BUCKET_ACCESS_KEY,
-//     secretAccessKey: process.env.AWS_BUCKET_SECRET_KEY,
-//   },
-// });
 
 // @desc    Fetch All Recommended products
 // @route   GET /api/products/recommend
@@ -190,19 +180,10 @@ const deleteProductById = async (req, res) => {
     if (products) {
       // first delete img in AWS
       for (let i = 0; i < products.images.length; i++) {
-        let imageFileName = products.images[i].split(
-          "https://d2c0vv5h4nuw6w.cloudfront.net/images/"
-        )[1];
-        const params = {
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Key: `images/${imageFileName}`,
-        };
-        const command = new DeleteObjectCommand(params);
-        try {
-          await s3.send(command);
-        } catch {
-          console.log("img no longer exists");
-        }
+        let imageFileName = products.images[i]
+        fs.unlink(`public/images/${imageFileName}`, (error) => {
+           console.error(error)
+        })
       }
       // Then delete img in Database
       await products.remove();
@@ -223,7 +204,7 @@ const createProduct = async (req, res) => {
   try {
     let images = [];
     for (let i = 0; i < req.files.length; i++) {
-      images.push(req.files[i].originalname)
+      images.push(req.files[i].filename)
     }
     const product = new Product({
       name: req.body.name,
@@ -264,40 +245,26 @@ const updateProduct = async (req, res) => {
     const product = await Product.findById(req.params.id);
     let images = undefined;
     if (product) {
+
+      console.log(req.files)
+      console.log('file list')
       // If new images file added
       if (req.files.length > 0) {
         images = [];
 
         // delete all old images
         for (let i = 0; i < product.images.length; i++) {
-          let imageFileName = product.images[i].split(
-            "https://d2c0vv5h4nuw6w.cloudfront.net/images/"
-          )[1];
-          const params = {
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `images/${imageFileName}`,
-          };
-          const command = new DeleteObjectCommand(params);
-          try {
-            await s3.send(command);
-          } catch {
-            console.log("img no longer exists");
-          }
+          let imageFileName = product.images[i]
+          fs.unlink(`public/images/${imageFileName}`, (err) => {
+             console.error(err)
+          })
+          images = []
         }
 
         // add all new images
         for (let i = 0; i < req.files.length; i++) {
-          const imageName = randomImageName();
-          const params = {
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `images/${imageName}`,
-            Body: req.files[i].buffer,
-            ContentType: req.files[i].mimetype,
-          };
-          const command = new PutObjectCommand(params);
-          await s3.send(command);
           images.push(
-            "https://d2c0vv5h4nuw6w.cloudfront.net/images/" + imageName
+            req.files[i].filename
           );
         }
       }
@@ -330,12 +297,12 @@ const createProductReview = async (req, res) => {
     const { rating, comment } = req.body;
     const product = await Product.findById(req.params.id);
     if (product) {
-      // const alreadyReviewed = product.reviews.find(
-      //   (r) => r.user.toString() === req.user._id.toString()
-      // );
-      // if (alreadyReviewed) {
-      //   throw new Error("Product Already Reviewed");
-      // }
+      const alreadyReviewed = product.reviews.find(
+        (r) => r.user.toString() === req.user._id.toString()
+      );
+      if (alreadyReviewed) {
+        throw new Error("Product Already Reviewed");
+      }
       const review = {
         user: req.user._id,
         name: req.user.name,

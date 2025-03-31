@@ -31,6 +31,7 @@ export default function AdminEditProduct() {
       .then(function (res) {
         const data = res.data;
         setImg(data.images);
+        console.log(data.images)
         setName(data.name);
         setDescription(data.description);
         setCategory(data.category);
@@ -56,7 +57,7 @@ export default function AdminEditProduct() {
     window.scrollTo(0, 0);
     setPending(true);
     const formData = new FormData();
-
+    
     for (let i = 0; i < img.length; i++) {
       formData.append("images", img[i]);
     }

@@ -41,16 +41,15 @@ const authUser = async (req, res) => {
 const getUserProfile = async (req, res) => {
   try {
     const user = await User.findOne(req.user._id);
-    if (user) {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
+
+    if (!user) throw new Error("User Not Found")
+        res.json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
       });
-    } else {
-      throw new Error("User Not Found");
-    }
+
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -63,25 +62,23 @@ const updateUserProfile = async (req, res) => {
   try {
     const user = await User.findOne(req.user._id);
 
-    if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
-      if (req.body.password) {
+    if (!user) throw new Error("User not Found")
+
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
         user.password = await hashPassword(req.body.password);
-      }
+    }
 
-      const updatedUser = await user.save();
+    const updatedUser = await user.save();
 
-      res.json({
+    res.json({
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser._id),
       });
-    } else {
-      throw new Error("User not found");
-    }
   } catch (error) {
     res.status(error.code).json({ message: error.message });
   }

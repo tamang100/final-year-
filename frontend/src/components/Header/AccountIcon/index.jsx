@@ -37,7 +37,7 @@ export default function AccountIcon() {
   } else {
     return (
       <HeaderIcon
-        src="https://d2c0vv5h4nuw6w.cloudfront.net/icons/account-1.png"
+        src="/icons/profile-user.png"
         onClick={() => navigate("/login")}
       />
     );

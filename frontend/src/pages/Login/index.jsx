@@ -79,7 +79,7 @@ export default function LoginPage() {
           Log In
         </button>
         <CustomDivider text={"OR"} />
-        <button
+        {/* <button
           className="auth-button white-button"
           type="button"
           onClick={demoUserHandler}
@@ -92,7 +92,7 @@ export default function LoginPage() {
           onClick={demoAdminHandler}
         >
           Continue with demo admin
-        </button>
+        </button> */}
         <h1 className="auth__navigation">
           Need an account?{" "}
           <span onClick={(e) => navigate(`/register?redirect=${redirect}`)}>

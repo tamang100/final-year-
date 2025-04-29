@@ -17,13 +17,13 @@ export default function AddCart({ productInfo, count, setCount }) {
   return (
     <div className="productDetailPage__pricesContainer">
       <div className="productDetailPage__price">
-        $ {productInfo.price / 100}
+        NRs {productInfo.price / 100}
       </div>
       <div className="productDetailPage__addCart">
         {productInfo.countInStock > 0 ? (
           <div className="addCount-button margin-inline-end-16">
             <img
-              src="https://d2c0vv5h4nuw6w.cloudfront.net/icons/minus-icon.png"
+              src="/icons/minus.png"
               alt="minus-button"
               onClick={() =>
                 setCount((prevState) => {
@@ -34,7 +34,7 @@ export default function AddCart({ productInfo, count, setCount }) {
             />
             <h1>{count}</h1>
             <img
-              src="https://d2c0vv5h4nuw6w.cloudfront.net/icons/plus-icon.png"
+              src="/icons/plus.png"
               alt="plus-button"
               onClick={() => setCount((prevState) => prevState + 1)}
             />

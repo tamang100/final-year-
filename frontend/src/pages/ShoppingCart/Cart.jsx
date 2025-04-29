@@ -49,13 +49,13 @@ export default function Cart({ cartItems }) {
                 <div>
                   <div className="addCount-button">
                     <img
-                      src="https://d2c0vv5h4nuw6w.cloudfront.net/icons/minus-icon.png"
+                      src="/icons/minus.png"
                       alt=""
                       onClick={(e) => quantityHandler(product, product.qty - 1)}
                     />
                     {product.qty}
                     <img
-                      src="https://d2c0vv5h4nuw6w.cloudfront.net/icons/plus-icon.png"
+                      src="/icons/plus.png"
                       alt=""
                       onClick={(e) => quantityHandler(product, product.qty + 1)}
                     />

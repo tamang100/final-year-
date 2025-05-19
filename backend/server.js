@@ -18,8 +18,8 @@ const PORT = process.env.PORT
 // server.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 const allowedOrigins = [
-  "http://127.0.0.1:3001",
-  "http://localhost:3001",
+  "http://127.0.0.1:3000",
+  "http://localhost:3000",
   "https://checkout.stripe.com",
 ];
 

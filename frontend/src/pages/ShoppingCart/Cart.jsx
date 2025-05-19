@@ -1,7 +1,7 @@
-import React from "react";
-import { addToCart, deleteFromCart } from "../../redux/action/apiCart.js";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import { addToCart, deleteFromCart } from "../../redux/action/apiCart.js";
 
 export default function Cart({ cartItems }) {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function Cart({ cartItems }) {
               <div className="cart_listing" key={product._id}>
                 <img
                   className="cart_listing__image"
-                  src={product.image}
+                  src={`http://localhost:8000/images/${product.image}`}
                   alt="product_image"
                   onClick={() => navigate(`/product/${product._id}`)}
                 />

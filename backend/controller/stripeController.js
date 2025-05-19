@@ -26,26 +26,26 @@ const stripeCheckOut = async (req, res) => {
       metaDatas[`orderItems_${index}`] = JSON.stringify(item);
     });
 
-    const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
-    const session = await stripe.checkout.sessions.create({
-      line_items: itemsList,
-      mode: "payment",
-      payment_method_types: ["card"],
-      client_reference_id: customerID,
-      success_url: `${process.env.DOMAIN}/successPayment`,
-      cancel_url: `${process.env.DOMAIN}/cart`,
-      shipping_address_collection: {
-        allowed_countries: ["US", "CA"],
-      },
-      shipping_options: [
-        { shipping_rate: "shr_1M5U3aASzu4JHJRJbIkd0YTd" },
-        { shipping_rate: "shr_1M5U3xASzu4JHJRJkNjh3dS4" },
-        { shipping_rate: "shr_1M5U4HASzu4JHJRJeKKgwQ22" },
-      ],
-      metadata: metaDatas,
-    });
+    // const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
+    // const session = await stripe.checkout.sessions.create({
+    //   line_items: itemsList,
+    //   mode: "payment",
+    //   payment_method_types: ["card"],
+    //   client_reference_id: customerID,
+    //   success_url: `${process.env.DOMAIN}/successPayment`,
+    //   cancel_url: `${process.env.DOMAIN}/cart`,
+    //   shipping_address_collection: {
+    //     allowed_countries: ["US", "CA"],
+    //   },
+    //   shipping_options: [
+    //     { shipping_rate: "shr_1M5U3aASzu4JHJRJbIkd0YTd" },
+    //     { shipping_rate: "shr_1M5U3xASzu4JHJRJkNjh3dS4" },
+    //     { shipping_rate: "shr_1M5U4HASzu4JHJRJeKKgwQ22" },
+    //   ],
+    //   metadata: metaDatas,
+    // });
 
-    res.status(201).json({ url: session.url });
+    res.status(201).json({ url: `${process.env.DOMAIN}/successPayment` });
   } catch (error) {
     res.status(error.statusCode).json({ message: error.message });
   }

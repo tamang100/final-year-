@@ -19,7 +19,7 @@ export default function Ratings(prop) {
         src={
           rating > 0
             ? rating > 0.5
-              ? "//icons/star-fill.png"
+              ? "/icons/star-fill.png"
               : "icons/star-half-fill.png"
             : "/icons/star-unfill.png"
         }

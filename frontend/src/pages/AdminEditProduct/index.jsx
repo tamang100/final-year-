@@ -31,7 +31,6 @@ export default function AdminEditProduct() {
       .then(function (res) {
         const data = res.data;
         setImg(data.images);
-        console.log(data.images)
         setName(data.name);
         setDescription(data.description);
         setCategory(data.category);

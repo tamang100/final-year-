@@ -26,7 +26,7 @@ export const startStripeCheckOut = (order) => {
         order,
         config
       );
-      window.location = data.url;
+      window.location.href = data.url;
     } catch (error) {
       if (error.response?.status === 401) {
         dispatch(logout());

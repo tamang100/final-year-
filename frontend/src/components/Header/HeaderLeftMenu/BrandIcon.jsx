@@ -3,6 +3,6 @@ import { Link } from "react-router-dom";
 
 export default function BrandIcon() {
   return (
-    <Link to='/' className="header-icon">Karkana</Link>
+    <h1 className="" onClick={onclick}>Karkhana</h1>
   );
 }

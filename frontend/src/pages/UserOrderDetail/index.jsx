@@ -38,7 +38,7 @@ export default function OrderDetailPage() {
                   >
                     <img
                       className="review_img"
-                      src={item.image}
+                      src={`http://localhost:8000/${item.image}`}
                       alt="review_img"
                     />
                     <div>{item.name}</div>

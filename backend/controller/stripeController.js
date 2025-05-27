@@ -38,7 +38,11 @@ const stripeCheckOut = async (req, res) => {
       },
       metadata: metaDatas,
     });
-    
+    console.log(session) 
+    itemsList.map((item , index)=> {
+    console.log(item)
+    saveOrder({...item , client_reference_id: customerID, id: session.id, payment_status: 'paid', metadata: session.metadata })
+    })
     res.status(201).json({ url: session.url });
   } catch (error) {
     console.log(error)
@@ -68,22 +72,22 @@ const saveOrder = async (paymentIntent) => {
       user: client_reference_id,
       orderItems: orderItemsArray,
       shippingAddress: {
-        line1: shipping_details.address.line1,
-        line2: shipping_details.address.line2,
-        city: shipping_details.address.city,
-        postalCode: shipping_details.address.postal_code,
-        country: shipping_details.address.country,
+        line1: shipping_details?.address.line1 || 'kathmandu',
+        line2: shipping_details?.address.line2 || 'kathmandu',
+        city: shipping_details?.address.city || 'koteshwor',
+        postalCode: shipping_details?.address.postal_code || '40000',
+        country: shipping_details?.address.country || 'Nepal',
       },
       paymentMethod: "Credit Card",
-      taxPrice: total_details.amount_tax,
-      shippingPrice: total_details.amount_shipping,
+      taxPrice: total_details?.amount_tax,
+      shippingPrice: total_details?.amount_shipping,
       subTotalPrice: amount_subtotal,
       totalPrice: amount_total,
       isPaid: payment_status === "paid" ? true : false,
       paidAt: payment_status === "paid" ? new Date() : null,
       isDelivered: false,
       orderPaymentID: id,
-      displayImage: paymentIntent.metadata.displayImage,
+      displayImage: paymentIntent?.metadata?.displayImage,
     });
     await order.save();
   } catch (error) {
